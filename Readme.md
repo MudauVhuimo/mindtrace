@@ -73,6 +73,29 @@ MindTrace/
 
 The Java sources are kept for history / if you ever want to port the model. For the hosted site they are irrelevant.
 
+### Fixing VS Code red squiggles on the Java imports (`com.google.genai.*`, Gson, etc.)
+
+The `src/main/java` + `pom.xml` contain the original reference implementation (data model records + a `GeminiTraceGenerator` that talks to Gemini using the official Google GenAI **Java** SDK + structured output).
+
+If after cloning you open a `.java` file and see red squiggly lines under the imports:
+
+1. Install the VS Code "Extension Pack for Java" (or at minimum "Language Support for Java™ by Red Hat" + "Maven for Java").
+2. From the repo root run:
+   ```bash
+   ./mvnw dependency:copy-dependencies -DoutputDirectory=lib
+   ./mvnw compile
+   ```
+   (The `mvnw` script now auto-downloads the Maven distribution the very first time you run it — the full dist is gitignored so the repo stays small.)
+3. In VS Code press `Cmd/Ctrl+Shift+P`, type "Java: Clean Java Language Server Workspace", run it, then "Reload Window".
+
+This creates `lib/` (40+ jars — gitignored) containing `google-genai-1.56.0.jar`, `gson-2.11.0.jar` and every transitive dependency, plus `target/classes`. The committed `.vscode/settings.json` tells the Java language server to treat `lib/**/*.jar` + `target/classes` as the project classpath.
+
+You only need to do the mvn step once per machine (or after a `git clean -fdx`).
+
+The **live hosted site** (the React app at mind-trace.studio) does **not** use any of this Java code — the Gemini calls and all the formatting logic live in `frontend/server.ts` (Node) and `frontend/src/App.tsx`.
+
+If you only ever want the web app you can delete the Java/Maven files (`src/`, `pom.xml`, `mvnw*`, `.mvn/`) with no effect on the product.
+
 ## Formatting guarantees (why it looks perfect on both typed & images)
 
 - Prompt is extremely strict about "what/why = natural English only", "translation = pure KaTeX or exactly null"
