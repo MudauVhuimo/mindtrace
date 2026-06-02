@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+
+  /* Brand blue extracted from the logo (most common blue) */
+  --color-brand-blue: #397feb;
+  --color-brand-blue-dark: #2d7be7;
+  --color-brand-blue-light: #a8c7fa;
+}
+
+@keyframes border-snake {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.snake-border-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 1.5px; /* Extremely thin, high-precision border for the rotating glow */
+  z-index: 1;
+}
+
+.snake-glow-element {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180%;
+  height: 180%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  background: conic-gradient(
+    from 0deg,
+    transparent 45%,
+    color-mix(in srgb, var(--color-brand-blue) 80%, transparent) 75%,
+    var(--color-brand-blue-light) 95%,
+    transparent 100%
+  );
+  animation: border-snake 6s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+html, body {
+  scroll-behavior: smooth;
+}
+
+/* KaTeX for proper math formatting in translations and formulas (fixes non-functional math) */
+@import "katex/dist/katex.min.css";
+
+.katex-math {
+  display: inline-block;
+  vertical-align: middle;
+  color: inherit;
+}
+
+/* Subtle animated background circles (different sizes; some grey outline, some filled; used on startup + trace views) */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-18px) scale(1.03); }
+}
+
+@keyframes float-slower {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(12px, 8px); }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 0.42; }
+}

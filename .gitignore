@@ -1,0 +1,40 @@
+# IDE
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.iml
+
+# Build artifacts (never commit)
+target/
+lib/
+frontend/dist/
+frontend/node_modules/
+
+# Maven wrapper downloaded distributions (keep only wrapper jar + properties)
+.mvn/apache-maven-*/
+
+# Frontend (will live in /frontend)
+node_modules/
+dist/
+build/
+.next/
+.svelte-kit/
+out/
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+*.swp
+
+# Environment (never commit real keys)
+.env
+.env.local
+!.env.example
+
+# Note: The Java sources (src/, pom.xml, mvnw) are legacy reference for the original data model.
+# The live web app lives entirely in frontend/ (React + Node/Express Gemini proxy).
+# You can delete the Java bits if you only want the hosted site.
