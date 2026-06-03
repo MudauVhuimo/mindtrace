@@ -1,12 +1,23 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" style="background-color: #1c1d1e;">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon.png?v=4" />
     <title>MindTrace</title>
+    <style>
+      /* Force dark background immediately to prevent white flash or overscroll white on mobile/desktop */
+      html, body {
+        background-color: #1c1d1e !important;
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        background-color: #1c1d1e;
+      }
+    </style>
   </head>
-  <body>
+  <body style="background-color: #1c1d1e;">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

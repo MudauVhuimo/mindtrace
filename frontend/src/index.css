@@ -49,8 +49,14 @@
   pointer-events: none;
 }
 
-html, body {
+html, body, #root {
+  background-color: #1c1d1e;
+  margin: 0;
+  padding: 0;
   scroll-behavior: smooth;
+  /* Ensure full coverage on all devices, including mobile overscroll and tall content */
+  min-height: 100vh;
+  min-height: 100dvh; /* modern dynamic viewport height for phones */
 }
 
 /* KaTeX for proper math formatting in translations and formulas (fixes non-functional math) */
