@@ -697,21 +697,21 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen font-sans bg-[#1c1d1e] text-[#f1f1f1] relative">
+    <div className="min-h-screen font-sans bg-[#1c1d1e] text-[#f1f1f1] relative overflow-x-hidden">
       {/* Background circles on the sides of the screen (flanking the centered content on both startup and trace views). Not behind the info, not clipped. */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        {/* Left side circles - closer to content start edge (around px-6 gutter), some bigger */}
-        <div className="absolute rounded-full border border-neutral-500/50 w-3 h-3 left-6 top-[12%] animate-[float-slow_12s_ease-in-out_infinite]" style={{ animationDelay: '-2s' }} />
-        <div className="absolute rounded-full bg-neutral-600/25 w-6 h-6 left-10 top-[25%] animate-[float-slower_15s_ease-in-out_infinite]" />
-        <div className="absolute rounded-full border border-neutral-400/55 w-10 h-10 left-14 top-[50%] animate-[pulse-subtle_9s_ease-in-out_infinite]" />
-        <div className="absolute rounded-full bg-neutral-700/15 w-14 h-14 left-[4%] bottom-[30%] animate-[float-slow_18s_ease-in-out_infinite]" style={{ animationDelay: '4s' }} />
-        <div className="absolute rounded-full border border-neutral-500/45 w-20 h-20 left-8 top-[70%] animate-[float-slower_22s_ease-in-out_infinite]" />
+        {/* Left side circles - closer to content start edge (around px-6 gutter), some bigger. Use % and sm: to avoid crowding on phones. */}
+        <div className="absolute rounded-full border border-neutral-500/50 w-2 sm:w-3 h-2 sm:h-3 left-[3%] sm:left-6 top-[12%] animate-[float-slow_12s_ease-in-out_infinite]" style={{ animationDelay: '-2s' }} />
+        <div className="absolute rounded-full bg-neutral-600/25 w-4 sm:w-6 h-4 sm:h-6 left-[6%] sm:left-10 top-[25%] animate-[float-slower_15s_ease-in-out_infinite]" />
+        <div className="absolute rounded-full border border-neutral-400/55 w-7 sm:w-10 h-7 sm:h-10 left-[8%] sm:left-14 top-[50%] animate-[pulse-subtle_9s_ease-in-out_infinite]" />
+        <div className="absolute rounded-full bg-neutral-700/15 w-10 sm:w-14 h-10 sm:h-14 left-[2%] sm:left-[4%] bottom-[30%] animate-[float-slow_18s_ease-in-out_infinite]" style={{ animationDelay: '4s' }} />
+        <div className="absolute rounded-full border border-neutral-500/45 w-14 sm:w-20 h-14 sm:h-20 left-[5%] sm:left-8 top-[70%] animate-[float-slower_22s_ease-in-out_infinite]" />
         {/* Right side circles - closer to content right edge, some bigger */}
-        <div className="absolute rounded-full border border-neutral-500/40 w-4 h-4 right-6 top-[15%] animate-[float-slower_22s_ease-in-out_infinite]" />
-        <div className="absolute rounded-full bg-neutral-600/20 w-5 h-5 right-10 bottom-[18%] animate-[pulse-subtle_7s_ease-in-out_infinite]" style={{ animationDelay: '-1s' }} />
-        <div className="absolute rounded-full border border-neutral-400/45 w-9 h-9 right-14 top-[45%] animate-[float-slow_14s_ease-in-out_infinite]" />
-        <div className="absolute rounded-full bg-neutral-700/12 w-12 h-12 right-[5%] bottom-[35%] animate-[float-slow_20s_ease-in-out_infinite]" />
-        <div className="absolute rounded-full border border-neutral-500/40 w-20 h-20 right-8 top-[65%] animate-[float-slower_16s_ease-in-out_infinite]" />
+        <div className="absolute rounded-full border border-neutral-500/40 w-3 sm:w-4 h-3 sm:h-4 right-[3%] sm:right-6 top-[15%] animate-[float-slower_22s_ease-in-out_infinite]" />
+        <div className="absolute rounded-full bg-neutral-600/20 w-4 sm:w-5 h-4 sm:h-5 right-[6%] sm:right-10 bottom-[18%] animate-[pulse-subtle_7s_ease-in-out_infinite]" style={{ animationDelay: '-1s' }} />
+        <div className="absolute rounded-full border border-neutral-400/45 w-6 sm:w-9 h-6 sm:h-9 right-[8%] sm:right-14 top-[45%] animate-[float-slow_14s_ease-in-out_infinite]" />
+        <div className="absolute rounded-full bg-neutral-700/12 w-8 sm:w-12 h-8 sm:h-12 right-[3%] sm:right-[5%] bottom-[35%] animate-[float-slow_20s_ease-in-out_infinite]" />
+        <div className="absolute rounded-full border border-neutral-500/40 w-14 sm:w-20 h-14 sm:h-20 right-[5%] sm:right-8 top-[65%] animate-[float-slower_16s_ease-in-out_infinite]" />
       </div>
       <main className="w-full relative px-6 py-4 md:py-6 z-10">
         <AnimatePresence mode="wait">
@@ -725,7 +725,7 @@ export default function App() {
               transition={{ duration: 0.4 }}
               className="w-full flex flex-col items-center justify-center text-center min-h-[calc(100vh-4rem)]"
             >
-              <h1 className="font-display text-3xl md:text-5xl font-light tracking-[-0.02em] text-center leading-tight mb-4 text-white whitespace-nowrap">
+              <h1 className="font-display text-3xl md:text-5xl font-light tracking-[-0.02em] text-center leading-tight mb-4 text-white break-words md:whitespace-nowrap">
                 Analyze problems with Cognitive Tracing<span className="text-brand-blue font-sans">.</span>
               </h1>
               
@@ -759,12 +759,12 @@ export default function App() {
                           <img
                             src={img.preview}
                             alt={`screenshot ${idx + 1}`}
-                            className="h-24 w-24 object-contain rounded border border-neutral-700 bg-black/30"
+                            className="h-16 w-16 sm:h-24 sm:w-24 object-contain rounded border border-neutral-700 bg-black/30"
                           />
                           <button
                             type="button"
                             onClick={() => removeAttachedImage(idx)}
-                            className="absolute -top-1.5 -right-1.5 bg-neutral-900 text-neutral-400 hover:text-rose-400 rounded-full w-6 h-6 flex items-center justify-center text-xs leading-none border border-neutral-700 opacity-90 group-hover:opacity-100"
+                            className="absolute -top-1 -right-1 sm:-top-1.5 sm:-right-1.5 bg-neutral-900 text-neutral-400 hover:text-rose-400 rounded-full w-7 h-7 sm:w-6 sm:h-6 flex items-center justify-center text-xs leading-none border border-neutral-700 opacity-90 group-hover:opacity-100"
                             title="Remove image"
                           >
                             ×
@@ -783,7 +783,7 @@ export default function App() {
                       onChange={(e) => setInputText(e.target.value)}
                       onPaste={handlePaste}
                       placeholder="e.g., Prove that W ∩ V is a subspace of V... (or paste/attach screenshot)"
-                      className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm md:text-base font-sans resize-none py-2 focus:outline-none overflow-hidden text-white placeholder-neutral-500 min-h-[120px] pl-6 pr-20"
+                      className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm md:text-base font-sans resize-none py-2 focus:outline-none overflow-hidden text-white placeholder-neutral-500 min-h-[120px] pl-6 pr-16 sm:pr-20"
                       disabled={isGenerating}
                       onKeyDown={(e) => {
                         // Enter = newline (default for textarea, allows multi-line problems).
@@ -800,7 +800,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="absolute left-6 bottom-2 p-2 rounded-xl bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors focus:outline-none"
+                      className="absolute left-6 bottom-2 p-3 sm:p-2 rounded-xl bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 transition-colors focus:outline-none min-h-[44px] min-w-[44px] flex items-center justify-center"
                       title="Attach image screenshot(s) of the question (PNG/JPG). You can also paste directly from clipboard."
                       disabled={isGenerating}
                     >
@@ -811,7 +811,7 @@ export default function App() {
                     <button
                       type="submit"
                       disabled={(!inputText.trim() && attachedImages.length === 0) || isGenerating}
-                      className={`absolute right-6 bottom-2 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium text-xs md:text-sm transition-colors focus:outline-none shrink-0 ${
+                      className={`absolute right-6 bottom-2 inline-flex items-center justify-center gap-2 px-4 py-2 sm:py-2 rounded-xl font-medium text-xs md:text-sm transition-colors focus:outline-none shrink-0 min-h-[44px] ${
                         isGenerating || (!inputText.trim() && attachedImages.length === 0)
                           ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed'
                           : 'bg-brand-blue text-white hover:bg-brand-blue-dark cursor-pointer'
@@ -882,14 +882,14 @@ export default function App() {
                                 e.stopPropagation();
                                 shareItem(item);
                               }}
-                              className="text-[10px] px-1.5 py-0.5 rounded bg-neutral-700 hover:bg-neutral-600 text-neutral-300"
+                              className="text-[10px] px-2 py-1 sm:py-0.5 rounded bg-neutral-700 hover:bg-neutral-600 text-neutral-300 min-h-[32px] sm:min-h-0"
                               title="Generate condensed shareable link for this deconstruction (images omitted)"
                             >
                               Share
                             </button>
                             <button
                               onClick={(e) => deleteHistoryItem(item.id, e)}
-                              className="text-[10px] px-1 py-0.5 rounded bg-neutral-700 hover:bg-rose-600 text-neutral-300 hover:text-white"
+                              className="text-[10px] px-1.5 py-1 sm:py-0.5 rounded bg-neutral-700 hover:bg-rose-600 text-neutral-300 hover:text-white min-h-[32px] sm:min-h-0"
                               title="Delete from history"
                             >
                               <X className="w-3 h-3" />
@@ -934,7 +934,7 @@ export default function App() {
                     isLockedRef.current = false;
                   }}
                   title="Return to the dashboard / start a new analysis"
-                  className="inline-flex items-center gap-1.5 p-1.5 px-3.5 rounded-full text-xs font-semibold border cursor-pointer select-none border-[#2d2f31] text-[#a8c7fa] hover:bg-neutral-900"
+                  className="inline-flex items-center gap-1.5 p-2 sm:p-1.5 px-3.5 rounded-full text-xs sm:text-xs font-semibold border cursor-pointer select-none border-[#2d2f31] text-[#a8c7fa] hover:bg-neutral-900 min-h-[36px]"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>New Analysis</span>
@@ -1220,7 +1220,7 @@ export default function App() {
 
                       {/* Bottom action panel */}
                       <div className="pt-12 mt-12 border-t border-neutral-500/10 text-xs font-sans tracking-widest uppercase opacity-40 text-center md:text-left">
-                        Scroll up to return • Scroll down to begin thinking steps • Use New Analysis to go home
+                        Swipe/scroll to navigate • New Analysis to go home (mobile friendly)
                       </div>
                     </motion.div>
                   )}
@@ -1260,7 +1260,7 @@ export default function App() {
                           return (
                             <div 
                               key={index} 
-                              className={`w-2 h-2 rounded-full transition-colors duration-300 ${dotColor} cursor-pointer hover:scale-150`}
+                              className={`w-2.5 h-2.5 sm:w-2 sm:h-2 rounded-full transition-colors duration-300 ${dotColor} cursor-pointer hover:scale-150`}
                               title={`${node.nodeType}: Step ${index + 1} (click to jump)`}
                               onClick={() => { setActiveStepIndex(index); isLockedRef.current = false; }}
                             />
@@ -1333,7 +1333,7 @@ export default function App() {
 
                       {/* Passive layout hint instead of chunky scroll/nav buttons */}
                       <div className="pt-8 border-t border-dashed border-neutral-500/10 text-xs font-sans tracking-widest uppercase opacity-40 text-center md:text-left">
-                        Scroll/swipe/arrow keys • Click dots to jump steps/stages • New Analysis to go home
+                        Scroll/swipe • Tap dots to jump • New Analysis to go home (arrows on desktop)
                       </div>
                     </motion.div>
                   )}
@@ -1400,7 +1400,7 @@ export default function App() {
 
                       {/* Bottom action panel */}
                       <div className="pt-12 mt-12 border-t border-neutral-500/10 text-xs font-sans tracking-widest uppercase opacity-40 text-center md:text-left">
-                        Scroll up to return to thinking trace • Scroll to top for New Analysis
+                        Swipe/scroll up to return • New Analysis to restart (works great on phones/tablets)
                       </div>
                     </motion.div>
                   )}
