@@ -117,6 +117,19 @@ export default function App() {
     // Strip zero-width / junk chars that sometimes leak from model
     t = t.replace(/[\u200B-\u200D\uFEFF]/g, '');
 
+    // Early exit for pure symbolic / translation fields: render the entire thing as one KaTeX block.
+    // This prevents line-splitting from breaking multi-line LaTeX (e.g. aligned equations, matrices) in "Symbolic Translation Action".
+    // Model is prompted for pure LaTeX in trans, but we defend against \n or mixed.
+    const isLikelyPureMath = /\\[a-zA-Z]/.test(t) || /[\\^_{}=<>+\-*/⋅∑∫]/.test(t) ||
+      /begin|frac|pmatrix|array|align|sum|int|prod|alpha|beta|gamma|delta|omega|Gamma|Delta|Theta|Lambda|Xi|Pi|Sigma|Phi|Psi|Omega|vec|det|neq|implies|mathbb|underline|overline/.test(t) ||
+      /^\s*[A-Za-z_][A-Za-z0-9_]*\s*=/.test(t);
+    const hasLongEnglishProse = /\b(the|and|is|are|that|this|with|from|for|to|of|in|on|a|an|we|you|it|be|have|has|can|will|should|must|note|since|because|therefore|hence|thus|given|show|prove|find|compute|define|let|assume|recall)\b/i.test(t) && t.split(/\s+/).length > 8;
+    if (isLikelyPureMath && !hasLongEnglishProse) {
+      let latex = t.replace(/\n+/g, ' \\ ').replace(/\\n/g, ' \\ ').trim();
+      latex = latex.replace(/\\{2}([a-zA-Z{(_^0-9])/g, '\\$1');
+      return <MathRenderer latex={latex} />;
+    }
+
     // Helper: render simple **bold** and *italic* / _italic_ in a plain text segment (no math delims).
     // Applied to text parts so final solution etc can have **stuff like this** as requested.
     // Uses dangerouslySetInnerHTML on a span for the formatted text (safe, no React key/array issues for sibling children in lists).
@@ -259,6 +272,8 @@ export default function App() {
       c = c.replace(/\s*Problem\s*\d*[:\.\-][\s\S]*$/gi, '');
       // strip leading numbering e.g. "1. " "2) " from lines (esp. final solution workings for calc answers; you don't number steps in actual exam write-ups)
       c = c.replace(/^\s*\d+[\.\)\:\-\s]+/, '');
+      // Turn newlines into LaTeX breaks for symbolic translations in legacy data
+      c = c.replace(/\n+/g, ' \\ ');
       return c;
     };
     if (trace) {
@@ -753,7 +768,7 @@ export default function App() {
 
                   {/* Preview strip for attached screenshots - larger, at the top, aligned */}
                   {attachedImages.length > 0 && (
-                    <div className="mb-5 px-4 md:px-6 flex flex-wrap items-center gap-4">
+                    <div className="mb-5 px-5 md:px-6 flex flex-wrap items-center gap-4">
                       {attachedImages.map((img, idx) => (
                         <div key={idx} className="relative group">
                           <img
@@ -774,8 +789,9 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* Input row: textarea full from content-start to button-end, with overlaid side icons. Minimal internal x padding on textarea so text starts near left of its box (aligned to content start like other elements). */}
-                  <div className="relative px-4 md:px-6">
+                  {/* Input row: textarea reserves space (pl/pr) for overlaid absolute buttons so text never goes under them.
+                      Padding sized for button widths + gaps on all screen sizes. Buttons positioned to sit in the reserved areas. */}
+                  <div className="relative px-5 md:px-6">
                     <textarea
                       ref={textareaRef}
                       rows={3}
@@ -783,7 +799,7 @@ export default function App() {
                       onChange={(e) => setInputText(e.target.value)}
                       onPaste={handlePaste}
                       placeholder="e.g., Prove that W ∩ V is a subspace of V... (or paste/attach screenshot)"
-                      className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm md:text-base font-sans resize-none py-2 focus:outline-none overflow-hidden text-white placeholder-neutral-500 min-h-[120px] pl-6 pr-16 sm:pr-20"
+                      className="w-full bg-transparent border-none outline-none focus:ring-0 text-sm md:text-base font-sans resize-none py-2 focus:outline-none overflow-hidden text-white placeholder-neutral-500 min-h-[120px] pl-20 pr-32 sm:pl-20 sm:pr-36"
                       disabled={isGenerating}
                       onKeyDown={(e) => {
                         // Enter = newline (default for textarea, allows multi-line problems).
@@ -811,7 +827,7 @@ export default function App() {
                     <button
                       type="submit"
                       disabled={(!inputText.trim() && attachedImages.length === 0) || isGenerating}
-                      className={`absolute right-6 bottom-2 inline-flex items-center justify-center gap-2 px-4 py-2 sm:py-2 rounded-xl font-medium text-xs md:text-sm transition-colors focus:outline-none shrink-0 min-h-[44px] ${
+                      className={`absolute right-6 bottom-2 inline-flex items-center justify-center gap-2 px-3 py-1.5 sm:py-2 sm:px-4 rounded-xl font-medium text-[10px] sm:text-xs md:text-sm transition-colors focus:outline-none shrink-0 min-h-[40px] sm:min-h-[44px] ${
                         isGenerating || (!inputText.trim() && attachedImages.length === 0)
                           ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed'
                           : 'bg-brand-blue text-white hover:bg-brand-blue-dark cursor-pointer'
@@ -834,7 +850,7 @@ export default function App() {
                   </div>
 
                   {error && (
-                    <div className="mt-4 px-4 py-2 md:px-6 text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-900/50 rounded text-left leading-relaxed flex items-start gap-2">
+                    <div className="mt-4 px-5 py-2 md:px-6 text-xs font-semibold text-rose-400 bg-rose-950/30 border border-rose-900/50 rounded text-left leading-relaxed flex items-start gap-2">
                       <span className="flex-1">Error: {error}</span>
                       <button
                         type="button"

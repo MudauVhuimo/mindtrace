@@ -9,7 +9,7 @@ dotenv.config({ path: '.env.local' });
 dotenv.config(); // fallback to .env
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
 // Body parser
 app.use(express.json());
@@ -272,6 +272,9 @@ Then produce the COMPLETE Cognitive Trace (all layers) obeying the system rules 
       // extra anywhere (not just end) removal of problem read leaks for trans specifically
       s = s.replace(/Read\s+Problem\s*\d*[:\.\-][\s\S]*?/gi, '');
       s = s.replace(/Problem\s*\d*[:\.\-][\s\S]*?/gi, '');
+
+      // Turn any remaining newlines into proper LaTeX line breaks for multi-line symbolic translations
+      s = s.replace(/\n+/g, ' \\ ');
 
       s = cleanString(s) || '';
       if (!s || s.toLowerCase() === 'null') return null;
